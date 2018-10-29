@@ -2,5 +2,5 @@
 
 ## todo list
 
-- [] search
-- [] register/login
+- - [ ] search
+- - [ ] register/login
