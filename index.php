@@ -1,17 +1,17 @@
 <html>
-  <title>Home Project</title>
-  <?php include("assets/import.php");?>
+<head>
+  <title>KODARD HOME</title>
+</head>
 <body>
-  <div id="navbar" class="row" align="center"> <?php include("assets/navbar.php");?> </div>
-  <div id="content" class="row">
-    <div class="col-md-4">  </div>
-    <div class="col-md-4">
-      <a href="assets/units/search.php">function search(){};</a><br>
-      <a href="assets/units/search.php">function login(){};</a><br>
-      my workplace<br>
-    </div>
-    <div class="col-md-4">  </div>
-  </div>
-  <div id="footer" class="row"> <?php include("assets/footer.php");?> </div>
+    <!-- units 폴더의 php 리스트 출력  -->
+    <?php
+      $dir="./units";
+      $i=2;
+      $list = scandir($dir);
+      while($i<count($list)){
+        echo "<a href='$dir/$list[$i]'><li>$list[$i]</li></a>\n";
+        $i=$i+1;
+      }
+    ?>
 </body>
 </html>
