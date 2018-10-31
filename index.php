@@ -1,6 +1,6 @@
 <?php
 
-  // 디렉토리설정
+  // 디렉토리 경로설정
   mkdir('./monster/list',0777,true);
   $mondir = './monster/list/';
   $root = 'index.php';
@@ -20,23 +20,17 @@
 <body>
 
 
-<h2>Would you like to Make Monster?</h2>
-<!-- 선택한 메뉴에 해당하는 페이지 불러오기 -->
-<?php
+<h2>Make Monster</h2>
+<form method="POST" action='index.php'>
+  <p style='border:1px solid black;padding:10px'>
+    name : <input type="text" name="name">
+    detail : <input type="text" name="colour">
+    <input type="submit">
+  </p>
+</form>
 
-  if(isset($_GET['id'])){
-    $pageURL = './monster/'.$_GET['id'].'.php';
-    echo file_get_contents($pageURL);
-  }else{
-    echo "<p style='border:1px solid black;padding:10px'>select menu...</p>";
-  }
 
-?>
-<a href='<?=$root?>?id=makeMonster'>YES !</a><br><br>
-<a href='<?=$root?>?id=modifyMonster'>... Change name ?</a><br>
-<a href='<?=$root?>?id=deleteMonster'>... Delete monster ?</a><br>
-
-<h2>Inside of Monster Directory</h2>
+<h2>Monster Directory</h2>
 <!-- 몬스터디렉토리의 목록 불러오기 -->
 <p style='border:1px solid black;padding:10px'>
   <?php
@@ -57,12 +51,28 @@
 </p>
 
 
+
 <h2>Monster Details</h2>
 <!-- 위 리스트에서 선택된 몬스터의 정보 -->
 <?php
   if(isset($_GET['selid'])){
-    $pageURL = './monster/list/'.$_GET['selid'];
-    echo file_get_contents($pageURL);
+    if($_GET['id']=='modifyMonster'){
+
+      echo "youyou";
+      echo $_GET['selid'];
+    }else if($_GET['id']=='deleteMonster'){
+      echo "delete?";
+    }else{
+      $pageURL = './monster/list/'.$_GET['selid'];
+      echo 'name: '.$_GET['selid'].'<br>';
+      echo 'detail: '.file_get_contents($pageURL);
+    }
+?>
+<br><br>
+<!-- 몬스터 수정할것인가요? -->
+<a href='<?=$root?>?id=modifyMonster&selid=<?=$_GET['selid']?>'>... Change name ?</a><br>
+<a href='<?=$root?>?id=deleteMonster&selid=<?=$_GET['selid']?>'>... Delete monster ?</a><br>
+<?php
   }else{
     echo "no monster selected";
   }
