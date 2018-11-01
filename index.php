@@ -133,7 +133,6 @@ function cancel(){
 ?>
 
 
-
 <h2>File Control</h2>
 <!-- 현재경로확인, 폴더만들기, 현재폴더 리스트출력 -->
 <?php
@@ -175,4 +174,9 @@ function cancel(){
 <tr><td style="background-color:#007bff;width:300px"></td><td>#007bff</td></tr>
 </table>
 </body>
+<?php
+
+  require_once('footer.php');
+
+?>
 </html>
