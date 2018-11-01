@@ -1,13 +1,32 @@
 <?php
 
+
   // 디렉토리 경로설정
   mkdir('./monster/list',0777,true);
   $mondir = './monster/list/';
   $root = 'index.php';
 
-  // 등록폼 제출시 페이지리로드 & 파일생성
-  if(isset($_POST['name'])){
-    file_put_contents($mondir.$_POST['name'],$_POST['colour']);
+  // 페이지에서 쓰일 변수저장
+  if(isset($_GET['page'])){$page = $_GET['page']; }
+  else if(isset($_POST['page'])){$page = $_POST['page']; }else{$page = "index.php"; }
+  if(isset($_GET['mname'])){$mname = $_GET['mname']; }
+  else if(isset($_POST['mname'])){$mname = $_POST['mname']; $mdetail = $_POST['mdetail']; }else{$mname = ''; $mdetail = ''; }
+  if(isset($_POST['new_name'])){$new_name = $_POST['new_name']; }
+  if(isset($_POST['new_detail'])){$new_detail = $_POST['new_detail'];}
+
+  // 리다이렉션 후 CRUD
+  if($page == 'createOK'){
+    file_put_contents($mondir.$mname, $mdetail);
+    $mname='';
+  }else if($page == 'modifyOK'){
+    rename($mondir.$mname, $mondir.$new_name);
+    file_put_contents($mondir.$new_name, $new_detail);
+    $mname = $new_name;
+    echo "modify Success!";
+  }else if($page == 'deleteOK'){
+    unlink($mondir.$mname);
+    $mname='';
+    echo "delete, Success!";
   }
 
 ?>
@@ -15,17 +34,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WELCOME TO MONSTER PARK</title>
+<title>WELCOME TO MONSTER PARK</title>
+<script>
+function createOK(){
+  createForm.submit();
+}
+function modifyOK(){
+  modifyForm.submit();
+}
+function deleteOK(){
+  deleteForm.submit();
+}
+function cancel(){
+  location.href = "index.php?";
+}
+</script>
 </head>
 <body>
 
 
 <h2>Make Monster</h2>
-<form method="POST" action='index.php'>
+<form id="createForm" method="POST" action='index.php'>
   <p style='border:1px solid black;padding:10px'>
-    name : <input type="text" name="name">
-    detail : <input type="text" name="colour">
-    <input type="submit">
+    <input type="hidden" name="page" value="createOK">
+    name : <input id=create_name" type="text" name="mname">
+    detail : <input id="create_detail" type="text" name="mdetail">
+    <input type="button" value="create.." onclick="javascript:createOK()">
   </p>
 </form>
 
@@ -34,12 +68,12 @@
 <!-- 몬스터디렉토리의 목록 불러오기 -->
 <p style='border:1px solid black;padding:10px'>
   <?php
-      $list = scandir('monster/list');
+      $list = scandir($mondir);
       $i = 0;
       while($i < count($list)){
         if($list[$i]!='.'){
           if($list[$i]!='..'){
-             echo '<a href="'.$root.'?selid='.$list[$i].'">'.$list[$i].'</a><br>';
+             echo '<a href="'.$root.'?mname='.$list[$i].'">'.$list[$i].'</a><br>';
           }
         }
        $i = $i + 1;
@@ -51,30 +85,50 @@
 </p>
 
 
-
 <h2>Monster Details</h2>
 <!-- 위 리스트에서 선택된 몬스터의 정보 -->
 <?php
-  if(isset($_GET['selid'])){
-    if($_GET['id']=='modifyMonster'){
-
-      echo "youyou";
-      echo $_GET['selid'];
-    }else if($_GET['id']=='deleteMonster'){
-      echo "delete?";
-    }else{
-      $pageURL = './monster/list/'.$_GET['selid'];
-      echo 'name: '.$_GET['selid'].'<br>';
-      echo 'detail: '.file_get_contents($pageURL);
-    }
+  if($mname!=''){
+    // 몬스터 정보
+    $pageURL = $mondir.$mname;
+    $mdetail = file_get_contents($pageURL);
+    echo 'name: '.$mname.'<br>';
+    echo 'detail: '.$mdetail;
+    if($page=='modifyMonster'){
 ?>
-<br><br>
-<!-- 몬스터 수정할것인가요? -->
-<a href='<?=$root?>?id=modifyMonster&selid=<?=$_GET['selid']?>'>... Change name ?</a><br>
-<a href='<?=$root?>?id=deleteMonster&selid=<?=$_GET['selid']?>'>... Delete monster ?</a><br>
+    <!-- 몬스터 수정 -->
+    <form id="modifyForm" method="POST" action="index.php">
+    <br>
+    <input type="hidden" name="page" value="modifyOK">
+    <input type="hidden" name="mname" value="<?=$mname?>">
+    <input type="hidden" name="mdetail" value="<?=$mdetail?>">
+    <input type="text" name="new_name" placeholder="<?=$mname?>" style="width:200px"><br>
+    <input type="text" name="new_detail" placeholder="<?=$mdetail?>" style="width:200px"><br><br>
+    <input type="button" value="modify.." onclick="javascript:modifyOK()">
+    <input type="button" value="cancel" onclick="javascript:cancel()"><br>
+    </form>
 <?php
+    }else if($page=='deleteMonster'){
+?>
+    <!-- 몬스터 삭제 -->
+    <form id="deleteForm" method="POST" action="index.php">
+    <br><b>Would you like to delete?</b><br>
+    <input type="hidden" name="mname" value="<?=$mname?>">
+    <input type="hidden" name="page" value="deleteOK"><br>
+    <input type="button" value="delete" onclick="javascript:deleteOK()">
+    <input type="button" value="cancel" onclick="javascript:cancel()"><br>
+    </form>
+<?php 
+    }else{
+?>
+   <br><br>
+    <!-- 몬스터 메뉴 -->
+    <a href='<?=$root?>?page=modifyMonster&mname=<?=$mname?>'>... Change name ?</a><br>
+    <a href='<?=$root?>?page=deleteMonster&mname=<?=$mname?>'>... Delete monster ?</a><br>
+<?php
+    }
   }else{
-    echo "no monster selected";
+    echo "no monsters selected";
   }
 ?>
 
