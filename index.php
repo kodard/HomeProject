@@ -52,6 +52,9 @@ function cancel(){
 </head>
 <body>
 
+<h2>DB Connection test</h2>
+<a href="dbconnect.php">register</a>
+
 
 <h2>Make Monster</h2>
 <form id="createForm" method="POST" action='index.php'>
@@ -143,7 +146,7 @@ function cancel(){
   echo "my cwd<p style='border:1px solid black'>";
   echo "---------------------------------------------<br>";
   echo getcwd().'<br>';
-  mkdir('./data/you/are/precious',0777, true);
+  // mkdir('./data/you/are/precious',0777, true);
   $list = scandir('./');
   $i = 0;
   while($i < count($list)){

@@ -1,0 +1,10 @@
+create table member(
+
+id int(20) not null auto_increment,
+title varchar(200) not null,
+pass varchar(200) not null,
+about text,
+created datetime not null, 
+primary key(id)
+
+);
