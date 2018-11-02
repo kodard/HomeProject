@@ -1,8 +1,13 @@
 # HomeProject
 
-https://home-kodard.codeanyapp.com/
+https://home-kodard.codeanyapp.com/<br>
+study php and make monster park<br>
 
 ## todo list
 
+- - [X] monster CRUD
+- - [ ] connect mySQL
 - - [ ] search
-- - [ ] register/login
+- - [ ] upload photo
+- - [ ] create character
+- - [ ] design
