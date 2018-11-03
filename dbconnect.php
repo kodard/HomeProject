@@ -3,7 +3,7 @@
 	// DB connection
 	// $servername = "localhost"; error occured.
 	$servername = "127.0.0.1";
-	$username = "kodard";
+	$username = "root";
 	$password = "9999";
 	$dbname = "monsterpark";
 	$conn = new mysqli($servername,$username,$password, $dbname);
@@ -23,18 +23,36 @@
 			VALUES (".$userinfo.",now());
 		";
 		mysqli_query($conn, $sql);
-		echo "*** ".$title."님 성공적으로 등록되었습니다 ***" ;
+		echo "*** ".$title."님 성공적으로 등록되었습니다 ***<br>" ;
 	}
+
+	// 아이디선택시 회원정보출력
+	if($_GET['id']){
+
+	}
+	// 아이디정보창에서 수정또는삭제
+	if($_GET['id']){
+		
+	}
+
+	// 리스트 가져오기
+	$sql = "SELECT * FROM member LIMIT 1000";
+	$result = mysqli_query($conn,$sql);
+	$list = '';
+	while($row = mysqli_fetch_array($result)){
+		$list = $list."<li><a href=\"dbconnect.php?id={$row['id']}\">{$row['title']}</a></li>";
+	}
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>FreeBoard</title>
+	<title>register</title>
 	<meta charset="utf-8">
 </head>
 <body>
 	<h1>join us !</h1>
-	<h4>at the moment, this page only working with my local computer ...</h4>
+	<h4>at this moment, page only working with my local computer ...</h4>
 	<ol>
 		<!-- <li><a href="#">join us !</a></li> -->
 	</ol>
@@ -46,5 +64,7 @@
 		<textarea name="about"></textarea><br>
 		<input type="submit">
 	</form>
+	<h2>member list</h2>
+	<?= $list; ?>
 </body>
 </html>
