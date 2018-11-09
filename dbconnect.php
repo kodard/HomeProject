@@ -1,7 +1,10 @@
 <?php
 	
 	// DB connection
-	// $servername = "localhost"; error occured.
+	// $servername = "localhost";
+	 
+	// 터미널에서 ./mysql -uroot 실행해야 웹페이지에서 db접속가능해지는 이유...? 
+
 	$servername = "127.0.0.1";
 	$username = "root";
 	$password = "9999";

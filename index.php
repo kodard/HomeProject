@@ -34,6 +34,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<?php
+
+  require_once('import.php');
+
+?>
 <title>WELCOME TO MONSTER PARK</title>
 <script>
 function createOK(){
@@ -51,6 +56,12 @@ function cancel(){
 </script>
 </head>
 <body>
+
+<?php
+
+  require_once('header.php');
+
+?>
 
 <h2>DB Connection test</h2>
 <a href="dbconnect.php">register</a>
